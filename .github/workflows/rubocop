@@ -1,15 +1,7 @@
 name: RuboCop
-on:
-  push:
-    branches:
-      - main
-      - development
-      - CI
-  pull_request:
-    branches:
-      - main
-      - development
-      - CI
+
+on: [push, pull_request]
+
 jobs:
   rubocop:
     runs-on: ubuntu-latest
