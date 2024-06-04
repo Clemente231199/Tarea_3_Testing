@@ -17,7 +17,7 @@ RSpec.describe MessageController, type: :controller do
             message: { body: "Test message" }
           }
         }.to change(Message, :count).by(1)
-        
+
         expect(flash[:notice]).to eq('Pregunta creada correctamente!')
         expect(response).to redirect_to("/products/leer/#{@product.id}")
       end
@@ -36,5 +36,25 @@ RSpec.describe MessageController, type: :controller do
         expect(response).to redirect_to("/products/leer/#{@product.id}")
       end
     end
+
+  describe 'POST #elminar' do
+    context "existe usuario" do
+      before do
+        @message = Message.create!(body: "Test Message", product: @product, user: @user) # Adjust attributes as necessary
+        # Debugging output to ensure the message is created
+        puts "Message creation failed: #{@message.errors.full_messages}" unless @message.persisted?
+      end
+
+      it 'elimina el mensaje y redirige a la página de lectura del producto' do
+        expect {
+          delete :eliminar, params: { message_id: @message.id, product_id:@product.id }
+        }.to change(Message, :count).by(-1)
+
+        expect(response).to redirect_to("/products/leer/#{@product.id}")
+      end
+    end
+
+  end
+
   end
 end
