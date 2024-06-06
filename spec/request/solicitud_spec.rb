@@ -26,18 +26,6 @@ RSpec.describe Solicitud, type: :request do
       @solicitud_count=Solicitud.count
     sign_in @user
   end
-
-  describe 'insertar' do
-    context 'cuando hay suficiente stock' do
-      it 'crea una nueva solicitud y redirige con un mensaje de éxito' do
-        post solicitud_insertar_path, params: { solicitud: { stock: 3 }, product_id: @product.id }
-        expect(Solicitud.count).to eq(@solicitud_count+1)
-        expect(flash[:notice]).to eq('Solicitud de compra creada correctamente!')
-        expect(response).to have_http_status(:redirect)
-        end
-      end
-    end
-
   describe 'get index' do
     it 'asigna las solicitudes y productos del usuario actual' do
       get solicitud_index_path
@@ -69,6 +57,52 @@ RSpec.describe Solicitud, type: :request do
       end
     end
   end
+
+  describe 'insertar' do
+    context 'cuando hay suficiente stock' do
+      it 'crea una nueva solicitud y redirige con un mensaje de éxito' do
+        post solicitud_insertar_path, params: { solicitud: { stock: 3,reservation_datetime: '2024-06-06T12:00:00' }, product_id: @product.id }
+        expect(Solicitud.count).to eq(@solicitud_count+1)
+        expect(flash[:notice]).to eq('Solicitud de compra creada correctamente!')
+        expect(response).to have_http_status(:redirect)
+        end
+      end
+    context 'cuando falla insertar' do
+      it 'crea una nueva solicitud y redirige con un mensaje de éxito' do
+        allow_any_instance_of(Solicitud).to receive(:save).and_return(false)
+        post solicitud_insertar_path, params: { solicitud: { stock: 3,reservation_datetime: '2024-06-06T12:00:00' }, product_id: @product.id }
+        expect(flash[:error]).to eq('Hubo un error al guardar la solicitud!')
+        expect(response).to have_http_status(:redirect)
+      end
+    end
+  end
+  describe 'Eliminar' do
+    it 'happy' do
+      delete "/solicitud/eliminar/#{@solicitud.id}"
+      expect(flash[:notice]).to eq('Solicitud eliminada correctamente!')
+      expect(response).to have_http_status(:redirect)
+      end
+    it 'falla' do
+      allow_any_instance_of(Solicitud).to receive(:destroy).and_return(false)
+      delete "/solicitud/eliminar/#{@solicitud.id}"
+      expect(flash[:error]).to eq('Hubo un error al eliminar la solicitud!')
+      expect(response).to have_http_status(:redirect)
+      end
+  end
+  describe 'actualizar' do
+    it 'happy' do
+      patch "/solicitud/actualizar/#{@solicitud.id}"
+      expect(flash[:notice]).to eq('Solicitud aprobada correctamente!')
+      expect(response).to have_http_status(:redirect)
+      end
+    it 'falla' do
+      allow_any_instance_of(Solicitud).to receive(:update).and_return(false)
+      patch "/solicitud/actualizar/#{@solicitud.id}"
+      expect(flash[:error]).to eq('Hubo un error al aprobar la solicitud!')
+      expect(response).to have_http_status(:redirect)
+      end
+  end
+
 end
 
 
