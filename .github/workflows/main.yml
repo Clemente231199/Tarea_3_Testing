@@ -28,3 +28,6 @@ jobs:
 
     - name: Run RuboCop
       run: bundle exec rubocop
+
+    - name: Run Tests
+      run: bundle exec rspec        
