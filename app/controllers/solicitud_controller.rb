@@ -2,8 +2,12 @@
 class SolicitudController < ApplicationController
   # Muestra las solicitudes y productos asociados del usuario actual
   def index
-    @solicitudes = Solicitud.where(user_id: current_user.id)
-    @productos = Product.where(user_id: current_user.id)
+    if current_user
+      @solicitudes = Solicitud.where(user_id: current_user.id)
+      @productos = Product.where(user_id: current_user.id)
+    else
+      redirect_to '/solicitud/index'
+    end
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -15,6 +19,7 @@ class SolicitudController < ApplicationController
     producto = Product.find(params[:product_id])
     @solicitud.product_id = producto.id
     @solicitud.user_id = current_user.id
+
 
     if @solicitud.stock.to_i > producto.stock.to_i
       flash[:error] = 'No hay suficiente stock para realizar la solicitud!'
