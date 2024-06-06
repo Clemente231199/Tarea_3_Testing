@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ContactMessageController < ApplicationController
   # Crea un nuevo mensaje de contacto.
   #

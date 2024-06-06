@@ -1,13 +1,19 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ShoppingCart, type: :model do
-  let(:user) { User.create(name: "Ana Lopez", email: "ana.lopez@example.com", password: "Password123!") }
-  let(:product1) { Product.create!(nombre: "Producto 1", precio: 2000, stock: 5, user_id: user.id, categories: 'Cancha') }
-  let(:product2) { Product.create!(nombre: "Producto 2", precio: 3000, stock: 3, user_id: user.id, categories: 'Cancha') }
+  let(:user) { User.create(name: 'Ana Lopez', email: 'ana.lopez@example.com', password: 'Password123!') }
+  let(:product1) do
+    Product.create!(nombre: 'Producto 1', precio: 2000, stock: 5, user_id: user.id, categories: 'Cancha')
+  end
+  let(:product2) do
+    Product.create!(nombre: 'Producto 2', precio: 3000, stock: 3, user_id: user.id, categories: 'Cancha')
+  end
 
   subject do
     described_class.new(
-      user: user,
+      user:,
       products: {
         product1.id => 2,
         product2.id => 1
@@ -23,7 +29,7 @@ RSpec.describe ShoppingCart, type: :model do
     it 'no es válido sin usuario' do
       subject.user = nil
       expect(subject).to_not be_valid
-      expect(subject.errors[:user]).to include("debe existir")
+      expect(subject.errors[:user]).to include('debe existir')
     end
 
     it 'es válido con productos vacíos' do

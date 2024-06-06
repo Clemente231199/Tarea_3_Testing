@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Controlador para gestionar los usuarios
 class UsersController < ApplicationController
   # Muestra los detalles del usuario actual

@@ -1,15 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
-
-    before do
-        @user = User.create!(name: 'John1', password: 'Nonono123!', email: 'asdf@gmail.com',
-        role: 'admin')
-        sign_in @user
-        @product = Product.create!(nombre: 'John1', precio: 4000, stock: 1, user_id: @user.id, categories: 'Cancha')
-        @user.deseados << @product.id
-        @user.save
-    end
+  before do
+    @user = User.create!(name: 'John1', password: 'Nonono123!', email: 'asdf@gmail.com',
+                         role: 'admin')
+    sign_in @user
+    @product = Product.create!(nombre: 'John1', precio: 4000, stock: 1, user_id: @user.id, categories: 'Cancha')
+    @user.deseados << @product.id
+    @user.save
+  end
 
   describe 'GET #show' do
     it 'asigna el usuario actual a @user' do
@@ -29,11 +30,11 @@ RSpec.describe UsersController, type: :controller do
 
   describe 'GET #mensajes' do
     it 'asigna los mensajes del usuario actual a @user_messages y inicializa @shown_message_ids' do
-        message = Message.create(body: "Test message", user_id: @user.id, product_id: @product.id)
-        get :mensajes
-        expect(assigns(:user_messages)).to include(message)
-        expect(assigns(:shown_message_ids)).to eq([])
-        expect(response).to have_http_status(:ok)
+      message = Message.create(body: 'Test message', user_id: @user.id, product_id: @product.id)
+      get :mensajes
+      expect(assigns(:user_messages)).to include(message)
+      expect(assigns(:shown_message_ids)).to eq([])
+      expect(response).to have_http_status(:ok)
     end
   end
 
@@ -61,7 +62,7 @@ RSpec.describe UsersController, type: :controller do
 
   describe 'DELETE #eliminar_deseado' do
     it 'elimina un producto de la lista de deseados del usuario y redirige con un mensaje de éxito' do
-      delete :eliminar_deseado, params: { deseado_id: @product.id}
+      delete :eliminar_deseado, params: { deseado_id: @product.id }
       expect(@user.reload.deseados).not_to include(@product.to_s)
       expect(flash[:notice]).to eq('Producto quitado de la lista de deseados')
       expect(response).to redirect_to('/users/deseados')

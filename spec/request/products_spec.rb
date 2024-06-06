@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'Productos', type: :request do
@@ -6,7 +8,6 @@ RSpec.describe 'Productos', type: :request do
                             role: 'admin')
     sign_in @usuario
     @producto = Product.create!(nombre: 'John1', precio: 4000, stock: 1, user_id: @usuario.id, categories: 'Cancha')
-
   end
 
   describe 'GET /products/index' do
@@ -43,12 +44,13 @@ RSpec.describe 'Productos', type: :request do
       expect(response).to have_http_status(:success)
     end
     it 'producto tiene review' do
-      @review = Review.create!(user:@usuario,product:@producto ,tittle:"John1",description:"Lo pase muy bien",calification:"5")
+      @review = Review.create!(user: @usuario, product: @producto, tittle: 'John1', description: 'Lo pase muy bien',
+                               calification: '5')
       get "/products/leer/#{@producto.id}"
       expect(response).to have_http_status(:success)
     end
     it 'producto tiene horario' do
-      @producto.update(horarios:"11;12;13")
+      @producto.update(horarios: '11;12;13')
       get "/products/leer/#{@producto.id}"
       expect(response).to have_http_status(:success)
     end
@@ -73,7 +75,8 @@ RSpec.describe 'Productos', type: :request do
   describe 'POST /products/insertar' do
     context 'when user is an admin' do
       it 'creates a product' do
-        post '/products/insertar', params: { product: { nombre: 'Nuevo Producto', precio: 50, stock: 5, categories: 'Suplementos' } }
+        post '/products/insertar',
+             params: { product: { nombre: 'Nuevo Producto', precio: 50, stock: 5, categories: 'Suplementos' } }
         expect(flash[:notice]).to eq('Producto creado Correctamente !')
         expect(response).to redirect_to('/products/index')
       end
@@ -85,7 +88,8 @@ RSpec.describe 'Productos', type: :request do
       end
 
       it 'redirects to index with an alert' do
-        post '/products/insertar', params: { product: { nombre: 'Nuevo Producto', precio: 50, stock: 5, categories: 'Nueva Categoría' } }
+        post '/products/insertar',
+             params: { product: { nombre: 'Nuevo Producto', precio: 50, stock: 5, categories: 'Nueva Categoría' } }
         expect(flash[:alert]).to eq('Debes ser un administrador para crear un producto.')
         expect(response).to redirect_to('/products/index')
       end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JokeApiService
   include HTTParty
   base_uri 'https://v2.jokeapi.dev'

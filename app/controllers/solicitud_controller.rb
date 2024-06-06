@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Controlador para gestionar las solicitudes de compra
 class SolicitudController < ApplicationController
   # Muestra las solicitudes y productos asociados del usuario actual
@@ -19,7 +21,6 @@ class SolicitudController < ApplicationController
     producto = Product.find(params[:product_id])
     @solicitud.product_id = producto.id
     @solicitud.user_id = current_user.id
-
 
     if @solicitud.stock.to_i > producto.stock.to_i
       flash[:error] = 'No hay suficiente stock para realizar la solicitud!'

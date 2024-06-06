@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ContactMessage < ApplicationRecord
   # Valida los campos title, body, name y mail
   # Los campos no pueden estar vacíos y deben tener una longitud adecuada

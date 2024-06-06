@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Controlador para las acciones relacionadas con las reseñas de productos
 class ReviewController < ApplicationController
   load_and_authorize_resource

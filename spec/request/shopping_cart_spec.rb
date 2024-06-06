@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ShoppingCartController, type: :controller do
   before do
     @user = User.create(
-      name: "John Doe 1",
-      email: "john.doe1@example.com",
-      password: "Password123!",
-      password_confirmation: "Password123!"
+      name: 'John Doe 1',
+      email: 'john.doe1@example.com',
+      password: 'Password123!',
+      password_confirmation: 'Password123!'
     )
     sign_in @user
 
@@ -25,7 +27,7 @@ RSpec.describe ShoppingCartController, type: :controller do
       categories: 'Cancha'
     )
     @shopping_cart = ShoppingCart.create(user_id: @user.id)
-    @shopping_cart.products ={}
+    @shopping_cart.products = {}
     @shopping_cart.save
   end
 
@@ -97,7 +99,6 @@ RSpec.describe ShoppingCartController, type: :controller do
 
   describe 'POST #insertar_producto' do
     context 'usuario autenticado' do
-
       it 'crea un nuevo carro de compras si no existe' do
         @shopping_cart.destroy
         post :insertar_producto, params: { product_id: @product.id, add: { amount: 1 } }
@@ -107,8 +108,9 @@ RSpec.describe ShoppingCartController, type: :controller do
       it 'falla crear carro' do
         @shopping_cart.destroy
         allow_any_instance_of(ShoppingCart).to receive(:save).and_return(false)
-        expect{post :insertar_producto, params: { product_id: @product.id, add: { amount: 1 } }
-      }.to raise_error(NoMethodError)
+        expect do
+          post :insertar_producto, params: { product_id: @product.id, add: { amount: 1 } }
+        end.to raise_error(NoMethodError)
         expect(flash[:alert]).to eq('Hubo un error al crear el carro. Contacte un administrador.')
         expect(response).to redirect_to(root_path)
       end
@@ -161,9 +163,7 @@ RSpec.describe ShoppingCartController, type: :controller do
         post :insertar_producto, params: { product_id: @product2.id, add: { amount: 1 } }
         expect(flash[:alert]).to include('Hubo un error al agregar el producto al carro de compras')
         expect(response).to have_http_status(:unprocessable_entity)
-
       end
-
     end
 
     context 'usuario no autenticado' do
@@ -203,7 +203,6 @@ RSpec.describe ShoppingCartController, type: :controller do
     end
   end
 
-
   describe 'POST #realizar_compra' do
     context 'usuario autenticado' do
       it 'redirige al carro si no hay carro de compras' do
@@ -226,7 +225,7 @@ RSpec.describe ShoppingCartController, type: :controller do
         allow_any_instance_of(Solicitud).to receive(:save).and_return(false)
         post :realizar_compra
         expect(flash[:alert]).to eq('Hubo un error al realizar la compra. Contacte un administrador.')
-        expect(response).to redirect_to("/carro")
+        expect(response).to redirect_to('/carro')
       end
 
       it 'realiza la compra y limpia el carro' do
@@ -257,8 +256,6 @@ RSpec.describe ShoppingCartController, type: :controller do
     end
   end
 
-
-
   describe 'POST #limpiar' do
     context 'usuario autenticado' do
       it 'limpia el carro de compras' do
@@ -277,6 +274,5 @@ RSpec.describe ShoppingCartController, type: :controller do
         expect(response).to redirect_to('/carro')
       end
     end
-
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ShoppingCartController < ApplicationController
   # Vista del carro de compras
   def show
@@ -165,7 +167,6 @@ class ShoppingCartController < ApplicationController
     # Productos son guardados como {product_id => amount}
     shopping_cart.products = {}
     return shopping_cart if shopping_cart.save
-
 
     flash[:alert] = 'Hubo un error al crear el carro. Contacte un administrador.'
     redirect_to :root

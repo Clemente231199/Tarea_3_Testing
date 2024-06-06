@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ContactMessageController, type: :controller do
   before do
     @user = User.create(
-      name: "Admin User",
-      email: "admin@example.com",
-      password: "Password123!",
-      password_confirmation: "Password123!",
+      name: 'Admin User',
+      email: 'admin@example.com',
+      password: 'Password123!',
+      password_confirmation: 'Password123!',
       role: 'admin'
     )
 
@@ -15,30 +17,30 @@ RSpec.describe ContactMessageController, type: :controller do
 
   let(:valid_attributes) do
     {
-      name: "Test User",
-      mail: "test@example.com",
-      phone: "+56999999999",
-      title: "Test Title",
-      body: "Test Body"
+      name: 'Test User',
+      mail: 'test@example.com',
+      phone: '+56999999999',
+      title: 'Test Title',
+      body: 'Test Body'
     }
   end
 
   let(:invalid_attributes) do
     {
-      name: "",
-      mail: "",
-      phone: "",
-      title: "",
-      body: ""
+      name: '',
+      mail: '',
+      phone: '',
+      title: '',
+      body: ''
     }
   end
 
   describe 'POST #crear' do
     context 'con atributos válidos' do
       it 'crea un nuevo mensaje de contacto y redirige con un mensaje de éxito' do
-        expect {
+        expect do
           post :crear, params: { contact: valid_attributes }
-        }.to change(ContactMessage, :count).by(1)
+        end.to change(ContactMessage, :count).by(1)
         expect(flash[:notice]).to eq('Mensaje de contacto enviado correctamente')
         expect(response).to redirect_to('/contacto')
       end
@@ -46,9 +48,9 @@ RSpec.describe ContactMessageController, type: :controller do
 
     context 'con atributos inválidos' do
       it 'no crea un nuevo mensaje de contacto y redirige con un mensaje de error' do
-        expect {
+        expect do
           post :crear, params: { contact: invalid_attributes }
-        }.not_to change(ContactMessage, :count)
+        end.not_to change(ContactMessage, :count)
         expect(flash[:alert]).to include('Error al enviar el mensaje de contacto')
         expect(response).to redirect_to('/contacto')
       end
@@ -68,9 +70,9 @@ RSpec.describe ContactMessageController, type: :controller do
     context 'cuando es admin' do
       it 'elimina el mensaje de contacto y redirige con un mensaje de éxito' do
         contact_message = ContactMessage.create! valid_attributes
-        expect {
+        expect do
           delete :eliminar, params: { id: contact_message.id }
-        }.to change(ContactMessage, :count).by(-1)
+        end.to change(ContactMessage, :count).by(-1)
         expect(flash[:notice]).to eq('Mensaje de contacto eliminado correctamente')
         expect(response).to redirect_to('/contacto')
       end
@@ -103,9 +105,9 @@ RSpec.describe ContactMessageController, type: :controller do
     context 'cuando es admin' do
       it 'elimina todos los mensajes de contacto y redirige con un mensaje de éxito' do
         ContactMessage.create! valid_attributes
-        expect {
+        expect do
           delete :limpiar
-        }.to change(ContactMessage, :count).by(-1)
+        end.to change(ContactMessage, :count).by(-1)
         expect(flash[:notice]).to eq('Mensajes de contacto eliminados correctamente')
         expect(response).to redirect_to('/contacto')
       end
