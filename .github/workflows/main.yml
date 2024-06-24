@@ -25,7 +25,9 @@ jobs:
 
     - name: Install dependencies
       run: bundle install
-    - name: migrate
+    - name: migrate1
+      run: rails db:create RAILS_ENV=test
+    - name: migrate2
       run: rails db:migrate RAILS_ENV=test
 
     - name: Run Tests
