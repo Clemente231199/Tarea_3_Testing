@@ -16,7 +16,8 @@ RSpec.describe Solicitud, type: :request do
       nombre: 'John1',
       precio: 4000, stock: 10,
       user_id: @user.id,
-      categories: 'Cancha'
+      categories: 'Cancha',
+      horarios:'06,11,18'
     )
 
     @solicitud = Solicitud.create(
@@ -64,6 +65,15 @@ RSpec.describe Solicitud, type: :request do
              params: { solicitud: { stock: 3, reservation_datetime: '2024-06-06T12:00:00' }, product_id: @product.id }
         expect(Solicitud.count).to eq(@solicitud_count + 1)
         expect(flash[:notice]).to eq('Solicitud de compra creada correctamente!')
+        expect(response).to have_http_status(:redirect)
+      end
+    end
+    context 'cuando el horario no esta diponible' do
+      it'tira error' do
+        post solicitud_insertar_path,
+        params: { solicitud: { stock: 3, reservation_datetime: '2024-12-12T12:00:00', }, product_id: @product.id }
+        expect(Solicitud.count).to eq(@solicitud_count)
+        expect(flash[:error]).to eq('Fecha erronea!')
         expect(response).to have_http_status(:redirect)
       end
     end

@@ -32,8 +32,37 @@ class SolicitudController < ApplicationController
 
     if params[:solicitud][:reservation_datetime].present?
       fecha = params[:solicitud][:reservation_datetime].to_datetime
+      # puts fecha
       dia = fecha.strftime('%d/%m/%Y')
+      # puts dia
       hora = fecha.strftime('%H:%M')
+      # puts hora
+      valid=false
+      producto.horarios.split(";").each do |horario_raw|
+        horario=horario_raw.split(",")
+        dia_producto=horario[0]
+        hora_i_producto=horario[1]
+        hora_f_producto=horario[2]
+        # puts dia_producto
+        # puts hora_i_producto
+        # puts hora_f_producto
+        # puts dia.split("/")[0]
+        # puts hora.split(":")[0]
+        # puts hora.split(":")[0]
+        # puts "---"
+        cond1= dia_producto==dia.split("/")[0]
+        cond2= hora_i_producto<=hora.split(":")[0]
+        cond3= hora.split(":")[0]<hora_f_producto
+        if cond1 and cond2 and cond3
+          valid=true
+        end
+      end
+      if not valid
+        flash[:error] = 'Fecha erronea!'
+        redirect_to "/products/leer/#{params[:product_id]}"
+        return
+      end
+
       @solicitud.reservation_info = "Solicitud de reserva para el día #{dia}, a las #{hora} hrs"
     end
 
