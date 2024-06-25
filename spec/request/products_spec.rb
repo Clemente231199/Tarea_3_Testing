@@ -70,6 +70,18 @@ RSpec.describe 'Productos', type: :request do
       expect(flash[:notice]).to eq('Producto agregado a la lista de deseados')
       expect(@usuario.reload.deseados).to include(@producto.id.to_s)
     end
+    it 'fails to add a product to the user wishlist' do
+      allow_any_instance_of(User).to receive(:save).and_return(false)
+      post "/products/insert_deseado/#{@producto.id}"
+      expect(flash[:error]).to include('Hubo un error al guardar los cambios:')
+    end
+    it 'No deseados and add a product to the user wishlist' do
+      @usuario.deseados=nil
+      post "/products/insert_deseado/#{@producto.id}"
+      expect(response).to redirect_to("/products/leer/#{@producto.id}")
+      expect(flash[:notice]).to eq('Producto agregado a la lista de deseados')
+      expect(@usuario.reload.deseados).to include(@producto.id.to_s)
+    end
   end
 
   describe 'POST /products/insertar' do
@@ -80,6 +92,12 @@ RSpec.describe 'Productos', type: :request do
         expect(flash[:notice]).to eq('Producto creado Correctamente !')
         expect(response).to redirect_to('/products/index')
       end
+      it 'failed to save' do
+        allow_any_instance_of(Product).to receive(:save).and_return(false)
+        post '/products/insertar',
+          params: { product: { nombre: 'Nuevo Producto', precio: 50, stock: 5, categories: 'Nueva Categoría' } }
+        expect(flash[:error]).to eq('Hubo un error al guardar el producto: ')
+      end
     end
 
     context 'when user is not an admin' do
@@ -89,7 +107,7 @@ RSpec.describe 'Productos', type: :request do
 
       it 'redirects to index with an alert' do
         post '/products/insertar',
-             params: { product: { nombre: 'Nuevo Producto', precio: 50, stock: 5, categories: 'Nueva Categoría' } }
+        params: { product: { nombre: 'Nuevo Producto', precio: 50, stock: 5, categories: 'Nueva Categoría' } }
         expect(flash[:alert]).to eq('Debes ser un administrador para crear un producto.')
         expect(response).to redirect_to('/products/index')
       end
@@ -109,6 +127,13 @@ RSpec.describe 'Productos', type: :request do
         patch "/products/actualizar/#{@producto.id}", params: { product: { nombre: 'Producto Modificado' } }
         expect(response).to redirect_to('/products/index')
       end
+      it 'failes to updates a product' do
+        allow_any_instance_of(Product).to receive(:update).and_return(false)
+        patch "/products/actualizar/#{@producto.id}", params: { product: { nombre: 'Producto Modificado' } }
+        expect(flash[:error]).to eq('Hubo un error al guardar el producto. Complete todos los campos solicitados!')
+
+      end
+
     end
 
     context 'when user is not an admin' do
