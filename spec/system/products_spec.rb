@@ -28,7 +28,7 @@ RSpec.describe 'Products', type: :system do
       click_on 'Guardar'
 
       expect(page).to have_content('Producto creado Correctamente !')
-      expect(page).to have_current_path("/products/index")
+      expect(page).to have_current_path('/products/index')
     end
 
     it 'create a cancha but stock negative' do
@@ -44,8 +44,8 @@ RSpec.describe 'Products', type: :system do
 
       click_on 'Guardar'
 
-      expect(page).to have_content("Hubo un error al guardar el producto: Stock: debe ser mayor que o igual a 0")
-      expect(page).to have_current_path("/products/crear")
+      expect(page).to have_content('Hubo un error al guardar el producto: Stock: debe ser mayor que o igual a 0')
+      expect(page).to have_current_path('/products/crear')
     end
 
     it 'create a cancha but price negative' do
@@ -61,7 +61,7 @@ RSpec.describe 'Products', type: :system do
 
       click_on 'Guardar'
 
-      expect(page).to have_content("Hubo un error al guardar el producto: Precio: debe ser mayor que o igual a 0")
+      expect(page).to have_content('Hubo un error al guardar el producto: Precio: debe ser mayor que o igual a 0')
     end
 
     it 'create a cancha but price and stock negative' do
@@ -77,8 +77,7 @@ RSpec.describe 'Products', type: :system do
 
       click_on 'Guardar'
 
-      expect(page).to have_content("Hubo un error al guardar el producto: Stock: debe ser mayor que o igual a 0, Precio: debe ser mayor que o igual a 0")
-
+      expect(page).to have_content('Hubo un error al guardar el producto: Stock: debe ser mayor que o igual a 0, Precio: debe ser mayor que o igual a 0')
     end
 
     it 'cancel the creation of a product' do
@@ -95,10 +94,7 @@ RSpec.describe 'Products', type: :system do
       click_on 'Cancelar'
 
       expect(page).to have_current_path('/products/index')
-
     end
-
-
 
     it 'update cancha' do
       visit '/products/crear'
@@ -117,14 +113,12 @@ RSpec.describe 'Products', type: :system do
 
       expect(page).to have_css('.card')
 
-      within(".card", match: :first) do
+      within('.card', match: :first) do
         click_on 'Editar'
       end
       expect(find_field('Nombre').value).to eq('Primera cancha')
       expect(find_field('Precio').value).to eq('1000')
       expect(find_field('Stock').value).to eq('15')
-
-
 
       fill_in 'Nombre', with: 'Primera cancha actualizada'
       fill_in 'Precio', with: '2000'
@@ -132,12 +126,11 @@ RSpec.describe 'Products', type: :system do
 
       click_on 'Guardar'
 
-
       cancha = Product.order(created_at: :desc).first
 
       expect(cancha.nombre).to eq('Primera cancha actualizada')
-      expect(cancha.precio).to eq("2000")
-      expect(cancha.stock).to eq("20")
+      expect(cancha.precio).to eq('2000')
+      expect(cancha.stock).to eq('20')
     end
     it 'update cancha but no name' do
       visit '/products/crear'
@@ -156,7 +149,7 @@ RSpec.describe 'Products', type: :system do
 
       expect(page).to have_css('.card')
 
-      within(".card", match: :first) do
+      within('.card', match: :first) do
         click_on 'Editar'
       end
 
@@ -187,7 +180,7 @@ RSpec.describe 'Products', type: :system do
 
       expect(page).to have_css('.card')
 
-      within(".card", match: :first) do
+      within('.card', match: :first) do
         click_on 'Editar'
       end
 
@@ -218,16 +211,14 @@ RSpec.describe 'Products', type: :system do
 
       expect(page).to have_css('.card')
 
-      within(".card", match: :first) do
+      within('.card', match: :first) do
         click_on 'Editar'
       end
-
 
       click_on 'Cancelar'
 
       expect(page).to have_current_path('/products/index')
     end
-
 
     it 'crear una pregunta' do
       visit '/products/crear'
@@ -246,11 +237,11 @@ RSpec.describe 'Products', type: :system do
 
       expect(page).to have_css('.card')
 
-      within(".card", match: :first) do
+      within('.card', match: :first) do
         click_on 'Detalles'
       end
       fill_in 'message[body]', with: 'Hola soy un mensaje'
-      click_on "Crear"
+      click_on 'Crear'
       new_message = Message.order(created_at: :desc).first
       expect(new_message.body).to eq('Hola soy un mensaje')
     end

@@ -1,9 +1,11 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.feature "UserLogin", type: :feature do
+require 'rails_helper'
+
+RSpec.feature 'UserLogin', type: :feature do
   let(:user) { User.create!(email: 'user@example.com', password: 'password') }
 
-  scenario "User logs in successfully" do
+  scenario 'User logs in successfully' do
     visit new_user_session_path
 
     fill_in 'Email', with: user.email

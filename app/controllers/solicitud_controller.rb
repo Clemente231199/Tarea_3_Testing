@@ -37,12 +37,12 @@ class SolicitudController < ApplicationController
       # puts dia
       hora = fecha.strftime('%H:%M')
       # puts hora
-      valid=false
-      producto.horarios.split(";").each do |horario_raw|
-        horario=horario_raw.split(",")
-        dia_producto=horario[0]
-        hora_i_producto=horario[1]
-        hora_f_producto=horario[2]
+      valid = false
+      producto.horarios.split(';').each do |horario_raw|
+        horario = horario_raw.split(',')
+        dia_producto = horario[0]
+        hora_i_producto = horario[1]
+        hora_f_producto = horario[2]
         # puts dia_producto
         # puts hora_i_producto
         # puts hora_f_producto
@@ -50,14 +50,12 @@ class SolicitudController < ApplicationController
         # puts hora.split(":")[0]
         # puts hora.split(":")[0]
         # puts "---"
-        cond1= dia_producto==dia.split("/")[0]
-        cond2= hora_i_producto<=hora.split(":")[0]
-        cond3= hora.split(":")[0]<hora_f_producto
-        if cond1 and cond2 and cond3
-          valid=true
-        end
+        cond1 = dia_producto == dia.split('/')[0]
+        cond2 = hora_i_producto <= hora.split(':')[0]
+        cond3 = hora.split(':')[0] < hora_f_producto
+        valid = true if cond1 && cond2 && cond3
       end
-      if not valid
+      unless valid
         flash[:error] = 'Fecha erronea!'
         redirect_to "/products/leer/#{params[:product_id]}"
         return
