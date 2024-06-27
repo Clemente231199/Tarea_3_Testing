@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -101,4 +103,4 @@ gem 'yard', '~> 0.9.26'
 gem 'httparty'
 gem 'rails-controller-testing'
 
-gem "faker"
+gem 'faker'

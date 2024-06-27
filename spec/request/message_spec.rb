@@ -42,7 +42,7 @@ RSpec.describe MessageController, type: :controller do
     describe 'POST #elminar' do
       context 'existe usuario' do
         before do
-          @message = Message.create!(body: 'Test Message', product: @product, user: @user) # Adjust attributes as necessary
+          @message = Message.create!(body: 'Test Message', product: @product, user: @user)
           # Debugging output to ensure the message is created
           puts "Message creation failed: #{@message.errors.full_messages}" unless @message.persisted?
         end

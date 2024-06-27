@@ -30,7 +30,7 @@ class ShoppingCartController < ApplicationController
     end
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/AbcSize
   # Agregar producto al carro de compras
   def insertar_producto(buy_now: false)
     if user_signed_in?
@@ -87,7 +87,7 @@ class ShoppingCartController < ApplicationController
     end
   end
 
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/AbcSize
   # Eliminar producto del carro de compras
   def eliminar_producto
     @shopping_cart = ShoppingCart.find_by(user_id: current_user.id)

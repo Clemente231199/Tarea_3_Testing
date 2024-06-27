@@ -77,7 +77,8 @@ RSpec.describe 'Products', type: :system do
 
       click_on 'Guardar'
 
-      expect(page).to have_content('Hubo un error al guardar el producto: Stock: debe ser mayor que o igual a 0, Precio: debe ser mayor que o igual a 0')
+      expect(page).to have_content('Hubo un error al guardar el producto: Stock: debe ser mayor que o igual a 0,' \
+                            ' Precio: debe ser mayor que o igual a 0')
     end
 
     it 'cancel the creation of a product' do
@@ -188,7 +189,8 @@ RSpec.describe 'Products', type: :system do
 
       click_on 'Guardar'
 
-      expect(page).to have_content('Hubo un error al guardar el producto. Complete todos los campos solicitados!')
+      expect(page).to have_content('Hubo un error al guardar el producto. ' \
+                                   'Complete todos los campos solicitados!')
       expect(find_field('Nombre').value).to eq('Primera cancha')
       expect(find_field('Precio').value).to eq('1000')
       expect(find_field('Stock').value).to eq('15')

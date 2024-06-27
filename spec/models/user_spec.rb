@@ -61,13 +61,15 @@ RSpec.describe User, type: :model do
     it 'no es válido con un producto no existente en la lista de deseados' do
       subject.deseados = [999]
       expect(subject).to_not be_valid
-      expect(subject.errors[:deseados]).to include('el articulo que se quiere ingresar a la lista de deseados no es valido')
+      expect(subject.errors[:deseados]).to include('el articulo que se quiere ingresar a la lista' \
+                          ' de deseados no es valido')
     end
 
     it 'Error en contraseña muy simple "password123"' do
       subject.password = 'password123'
       subject.validate_password_strength
-      expect(subject.errors[:password]).to include('no es válido incluir como minimo una mayuscula, minuscula y un simbolo')
+      expect(subject.errors[:password]).to include('no es válido incluir como minimo una mayuscula, ' \
+                                  'minuscula y un simbolo')
     end
 
     it 'Error en contraseña muy simple "Password123/"' do

@@ -54,7 +54,8 @@ RSpec.describe UsersController, type: :controller do
         file = fixture_file_upload(Rails.root.join('spec', 'support', 'assets', 'test_image.txt'), 'text/plain')
         post :actualizar_imagen, params: { image: file }
         expect(@user.reload.image).not_to be_attached
-        expect(flash[:error]).to eq('Hubo un error al actualizar la imagen. Verifique que la imagen es de formato jpg, jpeg, png, gif o webp')
+        expect(flash[:error]).to eq('Hubo un error al actualizar la imagen.' \
+                      ' Verifique que la imagen es de formato jpg, jpeg, png, gif o webp')
         expect(response).to redirect_to('/users/show')
       end
     end
