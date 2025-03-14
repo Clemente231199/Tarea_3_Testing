@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ShoppingCartController < ApplicationController
   # Vista del carro de compras
   def show
@@ -28,7 +30,7 @@ class ShoppingCartController < ApplicationController
     end
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/AbcSize
   # Agregar producto al carro de compras
   def insertar_producto(buy_now: false)
     if user_signed_in?
@@ -85,7 +87,7 @@ class ShoppingCartController < ApplicationController
     end
   end
 
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/AbcSize
   # Eliminar producto del carro de compras
   def eliminar_producto
     @shopping_cart = ShoppingCart.find_by(user_id: current_user.id)
@@ -165,7 +167,6 @@ class ShoppingCartController < ApplicationController
     # Productos son guardados como {product_id => amount}
     shopping_cart.products = {}
     return shopping_cart if shopping_cart.save
-
 
     flash[:alert] = 'Hubo un error al crear el carro. Contacte un administrador.'
     redirect_to :root

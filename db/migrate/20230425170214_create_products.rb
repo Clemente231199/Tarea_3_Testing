@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateProducts < ActiveRecord::Migration[7.0]
   def change
     create_table :products do |t|
@@ -8,7 +10,7 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.string :url
 
       t.timestamps
-      t.column :deleted_at, :datetime, :limit => 6
+      t.column :deleted_at, :datetime, limit: 6
     end
   end
 end

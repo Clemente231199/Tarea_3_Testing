@@ -1,9 +1,15 @@
+# frozen_string_literal: true
+
 # Controlador para gestionar las solicitudes de compra
 class SolicitudController < ApplicationController
   # Muestra las solicitudes y productos asociados del usuario actual
   def index
-    @solicitudes = Solicitud.where(user_id: current_user.id)
-    @productos = Product.where(user_id: current_user.id)
+    if current_user
+      @solicitudes = Solicitud.where(user_id: current_user.id)
+      @productos = Product.where(user_id: current_user.id)
+    else
+      redirect_to '/solicitud/index'
+    end
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -26,8 +32,35 @@ class SolicitudController < ApplicationController
 
     if params[:solicitud][:reservation_datetime].present?
       fecha = params[:solicitud][:reservation_datetime].to_datetime
+      # puts fecha
       dia = fecha.strftime('%d/%m/%Y')
+      # puts dia
       hora = fecha.strftime('%H:%M')
+      # puts hora
+      valid = false
+      producto.horarios.split(';').each do |horario_raw|
+        horario = horario_raw.split(',')
+        dia_producto = horario[0]
+        hora_i_producto = horario[1]
+        hora_f_producto = horario[2]
+        # puts dia_producto
+        # puts hora_i_producto
+        # puts hora_f_producto
+        # puts dia.split("/")[0]
+        # puts hora.split(":")[0]
+        # puts hora.split(":")[0]
+        # puts "---"
+        cond1 = dia_producto == dia.split('/')[0]
+        cond2 = hora_i_producto <= hora.split(':')[0]
+        cond3 = hora.split(':')[0] < hora_f_producto
+        valid = true if cond1 && cond2 && cond3
+      end
+      unless valid
+        flash[:error] = 'Fecha erronea!'
+        redirect_to "/products/leer/#{params[:product_id]}"
+        return
+      end
+
       @solicitud.reservation_info = "Solicitud de reserva para el día #{dia}, a las #{hora} hrs"
     end
 

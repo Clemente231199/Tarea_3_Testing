@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ContactMessageController < ApplicationController
   # Crea un nuevo mensaje de contacto.
   #
@@ -90,7 +92,7 @@ class ContactMessageController < ApplicationController
   def limpiar
     if current_user.role == 'admin'
       @contact_messages = ContactMessage.all
-      if !@contact_messages.empty? && @contact_messages.destroy_all
+      if !@contact_messages.empty? && ContactMessage.destroy_all
         flash[:notice] = 'Mensajes de contacto eliminados correctamente'
       else
         flash[:alert] = 'Error al eliminar los mensajes de contacto'

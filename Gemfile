@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -73,6 +75,7 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner-active_record'
   gem 'selenium-webdriver'
+  gem 'shoulda-matchers', '~> 4.0'
   gem 'webdrivers'
 end
 
@@ -99,3 +102,5 @@ gem 'yard', '~> 0.9.26'
 
 gem 'httparty'
 gem 'rails-controller-testing'
+
+gem 'faker'

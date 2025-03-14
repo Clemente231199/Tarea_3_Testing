@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddProductAndUserToSolicitud < ActiveRecord::Migration[7.0]
   def change
     add_reference :solicituds, :product, null: false, foreign_key: true

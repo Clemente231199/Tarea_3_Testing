@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'simplecov'
 SimpleCov.start do
   add_group 'Controllers', 'app/request'
@@ -67,6 +69,10 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+  config.before(:each, type: :system) do
+    driven_by(:rack_test)
+  end
+
   config.before(:each, type: :system) do
     driven_by :selenium_chrome
   end

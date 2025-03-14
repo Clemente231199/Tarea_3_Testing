@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   # Incluye los módulos de autenticación de Devise.
   devise :database_authenticatable, :registerable,

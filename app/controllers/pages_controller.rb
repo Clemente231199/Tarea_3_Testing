@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PagesController < ApplicationController
   # Controlador para las páginas estáticas del sitio.
   def index

@@ -1,0 +1,15 @@
+AllCops:
+  Exlude:
+    -'app/*'
+    -'db/*'
+    -'cypress/*'
+    -'bin/*'
+
+    -'spec/*'
+
+Metrics/BlockLength:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
